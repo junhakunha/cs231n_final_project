@@ -54,7 +54,7 @@ class WeaklySupervisedModel(nn.Module):
 
         # Vectorized calculation of probabilities
         # Create masks for pairs where first digit is greater than second
-        mask_greater = torch.tril(torch.ones(10, 10), diagonal=-1).bool()
+        mask_greater = torch.tril(torch.ones(10, 10, device=x.device), diagonal=-1).bool()
         
         # Expand probabilities to match the mask shape
         probs1_expanded = class_probs1.unsqueeze(2)  # [batch_size, 10, 1]
@@ -69,9 +69,10 @@ class WeaklySupervisedModel(nn.Module):
     
     def predict(self, x):
         """
-        Predict probability of the first image being greater than the second image.
+        Predict the class of the image.
+        x is a tensor of shape (batch_size, 1, 28, 28)
         """
-        return self.forward(x)
+        return F.softmax(self.classifier(self.feature_extractor(x)), dim=1)
     
     def get_embedding(self, x):
         """

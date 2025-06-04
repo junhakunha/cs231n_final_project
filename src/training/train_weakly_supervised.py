@@ -70,11 +70,22 @@ def train_weakly_supervised_model(
     num_epochs=5,
     learning_rate=0.001,
     weight_decay=1e-4,
-    device='cuda' if torch.cuda.is_available() else 'cpu',
+    device=None,
     save_dir=WEAKLY_SUPERVISED_TRAINING_DIR
 ):
+    # Set device based on availability
+    if device is None:
+        if torch.backends.mps.is_available():
+            device = torch.device("mps")
+        elif torch.cuda.is_available():
+            device = torch.device("cuda")
+        else:
+            device = torch.device("cpu")
+    
+    print(f"Using device: {device}")
+    
     # Create datasets
-    train_dataset = WeaklySupervisedMNISTDataset(split='train', size='50k')
+    train_dataset = WeaklySupervisedMNISTDataset(split='train', size='500k')
     val_dataset = WeaklySupervisedMNISTDataset(split='val')
     
     # Create data loaders
