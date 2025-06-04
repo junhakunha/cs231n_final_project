@@ -1,4 +1,4 @@
-HOME_DIR = "/Users/junhalee/Desktop/CS 231N/cs231n_final_project"
+HOME_DIR = "/Users/sinamollaei/Desktop/Senior Year/CS 231N/231N Final Project Code/cs231n_final_project"
 
 
 DATA_DIR = f"{HOME_DIR}/data"
